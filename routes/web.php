@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\PartnerController as AdminPartnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Kelola Event (Step 3.4.5) -> url: /admin/events
     Route::resource('events', AdminEventController::class);
+
+    // Kelola Partner -> url: /admin/partners
+    Route::get('/partners', [AdminPartnerController::class, 'index'])->name('partners.index');
+    Route::post('/partners', [AdminPartnerController::class, 'store'])->name('partners.store');
 
     // Manajemen Kategori (Latihan 3.5) -> url: /admin/categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

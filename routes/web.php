@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 
@@ -46,7 +47,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('events', AdminEventController::class);
 
     // Manajemen Kategori (Latihan 3.5) -> url: /admin/categories
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::resource('categories', CategoryController::class);
+
+    // Manajemen Partner -> url: /admin/partners
+    Route::resource('partners', PartnerController::class);
 
     // Laporan Transaksi -> url: /admin/transactions
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');

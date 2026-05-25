@@ -2,37 +2,86 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $categories = [
-            (object)[
-                'name' => 'Musik',
-                'description' => 'Konser, festival musik, dan acara musik lainnya',
-                'event_count' => 12
-            ],
-            (object)[
-                'name' => 'Teknologi',
-                'description' => 'Workshop, seminar, dan hackathon tentang teknologi',
-                'event_count' => 8
-            ],
-            (object)[
-                'name' => 'Olahraga',
-                'description' => 'Turnamen, marathon, dan kompetisi olahraga',
-                'event_count' => 5
-            ],
-            (object)[
-                'name' => 'Seni & Budaya',
-                'description' => 'Pameran seni, pertunjukan teater, dan acara budaya',
-                'event_count' => 7
-            ]
-        ];
+        $query = Category::query();
 
-        return view('admin.categories.index', [
-            'categories' => $categories
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', '%' . $search . '%');
+        }
+
+        $categories = $query->withCount('events')->latest()->paginate(10);
+
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.categories.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255|unique:categories',
         ]);
+
+        // Generate slug from name
+        $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
+
+        Category::create($data);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Category $category)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+        ]);
+
+        // Generate slug from name
+        $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
+
+        $category->update($data);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Category $category)
+    {
+        $category->delete();
+
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

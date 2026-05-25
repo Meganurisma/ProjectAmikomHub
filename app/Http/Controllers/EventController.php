@@ -87,7 +87,6 @@ public function store(\Illuminate\Http\Request $request)
     ]);
  // Menyimpan data yang telah divalidasi ke dalam tabel moenggunakan model
     \App\Models\Event::create($data);
- return redirect()->route('admin.events.index')-
->with('success', 'Data Event berhasil ditambahkan.');
+ return redirect()->route('admin.events.index')->with('success', 'Data Event berhasil ditambahkan.');
 }
 }

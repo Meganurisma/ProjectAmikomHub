@@ -31,8 +31,7 @@ Pilihan</th>
  <tr class="border-b border-gray-100 hover:bg-gray50">
  <td class="p-4 text-gray-800">{{ $event->title }}
 </td>
-    <td class="p-4 text-indigo-600">{{ $event->category-
->name ?? '-' }}</td>
+    <td class="p-4 text-indigo-600">{{ $event->category->name ?? '-' }}</td>
     <td class="p-4 text-gray-600">{{ \Carbon\Carbon::
 parse($event->date)->format('d M Y, H:i') }}</td>
     <td class="p-4 flex gap-2">

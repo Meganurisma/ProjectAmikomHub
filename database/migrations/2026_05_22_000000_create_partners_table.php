@@ -10,8 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->renameColumn('stok', 'stock');
+        Schema::create('partners', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('logo_url')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -20,8 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->renameColumn('stock', 'stok');
-        });
+        Schema::dropIfExists('partners');
     }
 };

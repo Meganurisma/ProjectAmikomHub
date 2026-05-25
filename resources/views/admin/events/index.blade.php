@@ -1,43 +1,85 @@
 @extends('layouts.admin')
 @section('content')
-<div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">Manajemen Event</h2>
-        <a href="{{ route('admin.events.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded font-semibold hover:bg-indigo-700">Tambah Event</a>
-    </div>
+    <header class="flex justify-between items-center mb-10">
+        <div>
+            <h1 class="text-3xl font-black">Manajemen Event</h1>
+            <p class="text-slate-500 font-medium">Kelola event dan tiket dengan mudah.</p>
+        </div>
+        <a href="{{ route('admin.events.create') }}"
+            class="px-6 py-3 bg-emerald-600 text-white rounded-2xl font-bold shadow-lg shadow-emerald-100 hover:bg-emerald-700 active:scale-95 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus w-5 h-5"></i>
+            Tambah Event
+        </a>
+    </header>
 
     @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-4 rounded mb-5 border border-green-200">{{ session('success') }}</div>
+        <div
+            class="mb-6 px-6 py-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-700 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-check-circle w-5 h-5"></i>
+            {{ session('success') }}
+        </div>
     @endif
-    <div class="overflow-x-auto">
 
-        <table class="w-full bg-white rounded-lg shadow-sm border border-gray-200 text-left">
-        <thead>
-        <tr class="bg-gray-50 border-b border-gray-200">
-        <th class="p-4 font-semibold text-gray-600">Judul Event</th>
-        <th class="p-4 font-semibold text-gray-600"> Kategori</th>
-        <th class="p-4 font-semibold text-gray-600"> Tanggal</th>
-        <th class="p-4 font-semibold text-gray-600">Aksi Pilihan</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($events as $event)
-        <tr class="border-b border-gray-100 hover:bg-gray-50">
-        <td class="p-4 text-gray-800">{{ $event->title }} </td>
-        <td class="p-4 text-indigo-600">{{ $event->category->name ?? '-' }}</td>
-        <td class="p-4 text-gray-600">{{ \Carbon\Carbon::parse($event->date)->format('d M Y, H:i') }}</td>
-        <td class="p-4 flex gap-2">
-            <a href="{{ route('admin.events.edit', $event->id) }}" class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-1.5 rounded text-sm font-semibold hover:bg-blue-600 hover:text-white transition">Edit Data</a>
-            <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data acara ini secara permanen?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-100 text-red-600 border border-red-200 px-3 py-1.5 rounded text-sm font-semibold hover:bg-red-600 hover:text-white transition">Hapus</button>
+    <div class="bg-white rounded-2xl border border-emerald-100 shadow-md overflow-hidden">
+        <div class="px-8 py-6 bg-gradient-to-r from-emerald-50 to-emerald-100 border-b border-emerald-200">
+            <form action="{{ route('admin.events.index') }}" method="GET" class="flex gap-4">
+                <input type="text" name="search" placeholder="Cari event atau kategori..." value="{{ request('search') }}"
+                    class="flex-1 px-5 py-3 rounded-lg border-emerald-200 border bg-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
+                <button type="submit"
+                    class="px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition">
+                    <i class="fa-solid fa-magnifying-glass w-4 h-4"></i>
+                </button>
             </form>
-        </td>
-        </tr>
-        @endforeach
-        </tbody>
-        </table>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead
+                    class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white uppercase text-xs font-black tracking-widest">
+                    <tr>
+                        <th class="px-8 py-4">Judul Event</th>
+                        <th class="px-8 py-4">Kategori</th>
+                        <th class="px-8 py-4">Tanggal</th>
+                        <th class="px-8 py-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-emerald-100 border-t border-emerald-100">
+                    @forelse($events as $event)
+                        <tr class="hover:bg-emerald-50 transition">
+                            <td class="px-8 py-5">
+                                <p class="font-bold text-slate-800">{{ $event->title }}</p>
+                            </td>
+                            <td class="px-8 py-5">
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-sm font-semibold">{{ $event->category->name ?? '-' }}</span>
+                            </td>
+                            <td class="px-8 py-5 text-slate-600">{{ \Carbon\Carbon::parse($event->date)->format('d M Y, H:i') }}</td>
+                            <td class="px-8 py-5 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <a href="{{ route('admin.events.edit', $event->id) }}"
+                                        class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition">
+                                        <i class="fa-solid fa-pen-to-square w-4 h-4"></i>
+                                    </a>
+                                    <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
+                                        style="display: inline;"
+                                        onsubmit="return confirm('Yakin ingin menghapus event ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="p-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition">
+                                            <i class="fa-solid fa-trash-alt w-4 h-4"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-8 py-8 text-center text-slate-500 font-medium">Tidak ada event ditemukan</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 @endsection

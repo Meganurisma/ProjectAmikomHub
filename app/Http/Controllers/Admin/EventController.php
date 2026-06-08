@@ -44,14 +44,26 @@ class EventController extends Controller
     {
         // Menerapkan validasi data request dari pengguna
         $data = $request->validate([
-            'category_id' => 'required',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'title' => 'required|string |max:255',
+            'description' => 'nullable|string',
             'date' => 'required|date',
             'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric'
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:1',
+            'poster' => 'nullable|image|max:2048'
         ]);
+
+
+        if ($request->hasFile('poster')) {
+            if ($event->poster_path) {
+                \Storage::disk('public')->delete($event->poster_path);
+            }
+            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
+
+        $event->update($data);
+        return redirect()->route('admin.events.index')->with('success', 'Data event berhasil diperbarui.');
 
         // Menyimpan data yang telah divalidasi ke dalam tabel menggunakan Model
         \App\Models\Event::create($data);

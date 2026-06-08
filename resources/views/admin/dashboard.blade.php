@@ -1,87 +1,131 @@
-@extends('layouts.admin')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Amikom Event Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+        }
+        nav {
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            padding: 0 16px;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        nav h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        nav .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        nav span {
+            color: #374151;
+        }
+        nav button {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        nav button:hover {
+            background-color: #b91c1c;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        .dashboard-content {
+            background-color: white;
+            border: 2px dashed #e5e7eb;
+            border-radius: 8px;
+            padding: 32px;
+        }
+        .dashboard-content h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+        .dashboard-content p {
+            color: #4b5563;
+            margin-bottom: 24px;
+        }
+        .action-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .action-btn {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .action-btn.green {
+            background-color: #16a34a;
+        }
+        .action-btn.green:hover {
+            background-color: #15803d;
+        }
+        .action-btn.purple {
+            background-color: #9333ea;
+        }
+        .action-btn.purple:hover {
+            background-color: #7e22ce;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Admin Dashboard</h1>
+        <div class="user-info">
+            <span>{{ Auth::user()->name }}</span>
+            <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
 
-@section('content')
-
-<!-- Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-        <p class="text-slate-400 text-sm font-bold uppercase mb-1">Total Pendapatan</p>
-        <h3 class="text-2xl font-black">Rp 12.450.000</h3>
+    <div class="container">
+        <div class="dashboard-content">
+            <h2>Selamat datang di Admin Panel</h2>
+            <p>Anda telah berhasil login sebagai Admin.</p>
+            
+            <div class="action-links">
+                <a href="{{ route('admin.events.index') }}" class="action-btn">Kelola Events</a>
+                <a href="{{ route('admin.transactions.index') }}" class="action-btn green">Lihat Transactions</a>
+                <a href="{{ route('admin.categories.index') }}" class="action-btn purple">Kelola Categories</a>
+            </div>
+        </div>
     </div>
-
-    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-        <p class="text-slate-400 text-sm font-bold uppercase mb-1">Tiket Terjual</p>
-        <h3 class="text-2xl font-black">1.284</h3>
-    </div>
-
-    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-        <p class="text-slate-400 text-sm font-bold uppercase mb-1">Event Aktif</p>
-        <h3 class="text-2xl font-black">8 Event</h3>
-    </div>
-
-    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-        <p class="text-slate-400 text-sm font-bold uppercase mb-1">Pesanan Pending</p>
-        <h3 class="text-2xl font-black">12 Pesanan</h3>
-    </div>
-</div>
-
-<!-- Table -->
-<div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-    <div class="p-8 border-b flex justify-between items-center">
-        <h3 class="font-black text-xl">Transaksi Terakhir</h3>
-        <a href="/admin/transactions" class="text-indigo-600 font-bold hover:underline">Lihat Semua</a>
-    </div>
-
-    <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
-                <tr>
-                    <th class="px-8 py-4">Pembeli</th>
-                    <th class="px-8 py-4">Event</th>
-                    <th class="px-8 py-4">Status</th>
-                    <th class="px-8 py-4">Total</th>
-                </tr>
-            </thead>
-
-            <tbody class="divide-y border-t">
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-8 py-6">
-                        <p class="font-bold uppercase text-sm">Donni Prabowo</p>
-                        <p class="text-xs text-slate-400">donni@example.com</p>
-                    </td>
-                    <td class="px-8 py-6">Jazz Night 2024</td>
-                    <td class="px-8 py-6">
-                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Success</span>
-                    </td>
-                    <td class="px-8 py-6 font-bold text-indigo-600">Rp 155.000</td>
-                </tr>
-
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-8 py-6">
-                        <p class="font-bold uppercase text-sm">Maya Sari</p>
-                        <p class="text-xs text-slate-400">maya@example.com</p>
-                    </td>
-                    <td class="px-8 py-6">AI & Future Workshop</td>
-                    <td class="px-8 py-6">
-                        <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold">Pending</span>
-                    </td>
-                    <td class="px-8 py-6 font-bold text-indigo-600">Rp 55.000</td>
-                </tr>
-
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-8 py-6">
-                        <p class="font-bold uppercase text-sm">Budi Santoso</p>
-                        <p class="text-xs text-slate-400">budi@example.com</p>
-                    </td>
-                    <td class="px-8 py-6">Hackathon 2024</td>
-                    <td class="px-8 py-6">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">Free</span>
-                    </td>
-                    <td class="px-8 py-6 font-bold text-indigo-600">Rp 0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-@endsection
+</body>
+</html>

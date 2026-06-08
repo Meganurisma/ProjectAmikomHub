@@ -10,6 +10,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,21 +40,18 @@ Route::get('/ticket', [EventController::class, 'ticket'])->name('ticket');
 | dan nama rute akan diawali dengan 'admin.'
 */
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::get('admin/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('admin/login', [AuthController::class, 'login'])->name('login.post');
 
-    // Dashboard Admin (Step 3.4.5) -> url: /admin
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Kelola Event (Step 3.4.5) -> url: /admin/events
-    Route::resource('events', AdminEventController::class);
-
-    // Manajemen Kategori (Latihan 3.5) -> url: /admin/categories
-    Route::resource('categories', CategoryController::class);
-
-    // Manajemen Partner -> url: /admin/partners
-    Route::resource('partners', PartnerController::class);
-
-    // Laporan Transaksi -> url: /admin/transactions
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-
+    // Mengamankan Route Administrasi di balik tembok (Middleware)
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::resource('events', AdminEventController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('partners', PartnerController::class);
+        Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    });
 });

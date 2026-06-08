@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-05-05 10:00:00',
             'location' => 'Ruang Seminar B',
             'price' => 40000,
-            'stok' => 120,
+            'stock' => 120,
             'poster_path' => 'posters/event-1.png',
         ]);
 
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-05-08 15:00:00',
             'location' => 'Area Kampus & Sekitar',
             'price' => 75000,
-            'stok' => 60,
+            'stock' => 60,
             'poster_path' => 'posters/event-2.png',
         ]);
 
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-05-12 13:00:00',
             'location' => 'Hall Utama',
             'price' => 100000,
-            'stok' => 80,
+            'stock' => 80,
             'poster_path' => 'posters/event-3.png',
         ]);
 
@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-05-18 09:00:00',
             'location' => 'Lab Komputer 2',
             'price' => 90000,
-            'stok' => 70,
+            'stock' => 70,
             'poster_path' => 'posters/event-4.png',
         ]);
 
@@ -87,7 +87,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-05-25 18:30:00',
             'location' => 'Lapangan Utama',
             'price' => 50000,
-            'stok' => 200,
+            'stock' => 200,
             'poster_path' => 'posters/event-5.png',
         ]);
 
@@ -98,7 +98,7 @@ class DatabaseSeeder extends Seeder
             'date' => '2026-06-03 11:00:00',
             'location' => 'Ruang Auditorium',
             'price' => 60000,
-            'stok' => 100,
+            'stock' => 100,
             'poster_path' => 'posters/event-6.png',
         ]);
     }

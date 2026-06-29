@@ -101,5 +101,8 @@ class DatabaseSeeder extends Seeder
             'stock' => 100,
             'poster_path' => 'posters/event-6.png',
         ]);
+
+        // Jalankan PartnerSeeder
+        $this->call(PartnerSeeder::class);
     }
 }

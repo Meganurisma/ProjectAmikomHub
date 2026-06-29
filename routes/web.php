@@ -47,6 +47,10 @@ Route::get('admin/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('admin/login', [AuthController::class, 'login'])->name('login.post');
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+    
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
     // Mengamankan Route Administrasi di balik tembok (Middleware)

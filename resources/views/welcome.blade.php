@@ -77,8 +77,9 @@
             @foreach($events as $event)
                 <div
                     class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                    <div class="relative overflow-hidden bg-slate-200 h-80 rounded-t-3xl flex items-center justify-center">
-                        <span class="text-slate-400 text-xl font-semibold">200 x 600</span>
+                    <div class="relative overflow-hidden h-80 rounded-t-3xl bg-slate-200">
+                        <img src="{{ ($event->poster_path && Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/200x600' }}"
+                            alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
                         <div
                             class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-600 border border-indigo-100">
                             {{ $event->category->name }}
@@ -100,7 +101,7 @@
                                 Rp {{ number_format($event->price, 0, ',', '.') }}
                             </span>
 
-                            <a href="{{ route('event.detail') }}"
+                            <a href="{{ route('events.show', $event->id) }}"
                                 class="px-4 py-2 bg-white text-indigo-600 rounded-full font-bold border border-indigo-100 hover:bg-indigo-600 hover:text-white transition flex items-center gap-2">
                                 <i class="fa-solid fa-eye w-4 h-4"></i>
                                 Lihat Detail

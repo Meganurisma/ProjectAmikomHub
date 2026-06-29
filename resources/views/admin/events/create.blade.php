@@ -12,7 +12,7 @@
     </header>
 
     <div class="bg-white rounded-2xl border border-emerald-100 shadow-md p-8 max-w-2xl">
-        <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadowsm border border-gray-200 mt-2"
+        <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mt-2">
             @csrf
 
             <div class="mb-6">
@@ -106,17 +106,21 @@
                     class="px-6 py-3 bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 transition">
                     <i class="fa-solid fa-save w-4 h-4 mr-2"></i>
                     Simpan Event
-            <div class="mb-6">  
-                <label class="block mb-2 font - medium text-gray-700">Poster event 
-            (Opsional)</label>
-                <input type="file" name="poster" accept="image/*" class="w-full border border-gray-300 p-2.5 rounded">
-            </div>
                 </button>
                 <a href="{{ route('admin.events.index') }}"
                     class="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300 transition">
                     <i class="fa-solid fa-x w-4 h-4 mr-2"></i>
                     Batal
                 </a>
+            </div>
+
+            <div class="mb-6 mt-8">
+                <label for="poster" class="block mb-2 font-medium text-slate-700">Poster event (Opsional)</label>
+                <input type="file" id="poster" name="poster" accept="image/*"
+                    class="w-full border border-emerald-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition @error('poster') border-red-500 @enderror">
+                @error('poster')
+                    <p class="mt-2 text-sm text-red-600 font-medium">{{ $message }}</p>
+                @enderror
             </div>
         </form>
     </div>

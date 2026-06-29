@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Import semua Controller yang telah dibuat
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PartnerController;
@@ -24,9 +25,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Halaman Detail Event (Step 3.4.3)
 Route::get('/event/detail', [EventController::class, 'show'])->name('event.detail');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
-// Halaman Checkout (Step 3.4.3)
-Route::get('/checkout', [EventController::class, 'checkout'])->name('event.checkout');
+// Halaman Checkout
+Route::get('/checkout/{event}', [CheckoutController::class, 'create'])->name('checkout.create');
+Route::post('/checkout/{event}', [CheckoutController::class, 'store'])->name('checkout.store');
 
 // Halaman Tiket (Step 3.4.3)
 Route::get('/ticket', [EventController::class, 'ticket'])->name('ticket');

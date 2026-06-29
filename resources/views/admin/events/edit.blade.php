@@ -12,7 +12,7 @@
     </header>
 
     <div class="bg-white rounded-2xl border border-emerald-100 shadow-md p-8 max-w-2xl">
-        <form action="{{ route('admin.events.update', $event->id) }}" method="POST">
+        <form action="{{ route('admin.events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -112,6 +112,15 @@
                     <i class="fa-solid fa-x w-4 h-4 mr-2"></i>
                     Batal
                 </a>
+            </div>
+
+            <div class="mb-6 mt-8">
+                <label for="poster" class="block mb-2 font-medium text-slate-700">Poster event (Opsional)</label>
+                <input type="file" id="poster" name="poster" accept="image/*"
+                    class="w-full border border-emerald-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition @error('poster') border-red-500 @enderror">
+                @error('poster')
+                    <p class="mt-2 text-sm text-red-600 font-medium">{{ $message }}</p>
+                @enderror
             </div>
         </form>
     </div>

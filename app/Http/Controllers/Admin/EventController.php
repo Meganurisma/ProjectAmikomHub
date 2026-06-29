@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -42,10 +43,9 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // Menerapkan validasi data request dari pengguna
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string |max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date' => 'required|date',
             'location' => 'required|string|max:255',
@@ -54,19 +54,11 @@ class EventController extends Controller
             'poster' => 'nullable|image|max:2048'
         ]);
 
-
         if ($request->hasFile('poster')) {
-            if ($event->poster_path) {
-                \Storage::disk('public')->delete($event->poster_path);
-            }
             $data['poster_path'] = $request->file('poster')->store('posters', 'public');
         }
 
-        $event->update($data);
-        return redirect()->route('admin.events.index')->with('success', 'Data event berhasil diperbarui.');
-
-        // Menyimpan data yang telah divalidasi ke dalam tabel menggunakan Model
-        \App\Models\Event::create($data);
+        Event::create($data);
 
         return redirect()->route('admin.events.index')->with('success', 'Data Event berhasil ditambahkan.');
     }
@@ -94,14 +86,22 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $data = $request->validate([
-            'category_id' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'date' => 'required|date',
             'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric'
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:1',
+            'poster' => 'nullable|image|max:2048'
         ]);
+
+        if ($request->hasFile('poster')) {
+            if ($event->poster_path) {
+                Storage::disk('public')->delete($event->poster_path);
+            }
+            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
 
         $event->update($data);
 

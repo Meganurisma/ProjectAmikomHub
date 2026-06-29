@@ -64,21 +64,21 @@
                 <tr class="hover:bg-slate-50">
                     <td class="px-8 py-6 font-mono font-bold text-indigo-600">{{ $transaction->order_id }}</td>
                     <td class="px-8 py-6">
-                        <p class="font-bold">{{ $transaction->buyer_name }}</p>
-                        <p class="text-xs text-slate-400">{{ $transaction->buyer_email }}</p>
+                        <p class="font-bold">{{ $transaction->customer_name }}</p>
+                        <p class="text-xs text-slate-400">{{ $transaction->customer_email }}</p>
+                        <p class="text-xs text-slate-400">{{ $transaction->customer_phone }}</p>
                     </td>
-                    <td class="px-8 py-6">{{ $transaction->event_name }}</td>
-                    <td class="px-8 py-6 text-sm text-slate-500">{{ $transaction->date }}</td>
+                    <td class="px-8 py-6">{{ $transaction->event->title ?? '-' }}</td>
+                    <td class="px-8 py-6 text-sm text-slate-500">{{ $transaction->created_at?->format('d M Y, H:i') ?? '-' }}</td>
                     <td class="px-8 py-6">
-                        @if($transaction->status === 'Success')
-                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs">{{ $transaction->status }}</span>
-                        @elseif($transaction->status === 'Pending')
-                            <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs">{{ $transaction->status }}</span>
-                        @else
-                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs">{{ $transaction->status }}</span>
-                        @endif
+                        @php
+                            $status = strtolower($transaction->status);
+                        @endphp
+                        <span class="px-3 py-1 rounded-lg text-xs font-bold {{ $status === 'pending' ? 'bg-amber-100 text-amber-700' : ($status === 'success' || $status === 'settlement' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600') }}">
+                            {{ ucfirst($status) }}
+                        </span>
                     </td>
-                    <td class="px-8 py-6 text-right font-bold">{{ $transaction->total }}</td>
+                    <td class="px-8 py-6 text-right font-bold">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
                 </tr>
                 @empty
                 <tr>
@@ -93,14 +93,10 @@
     </div>
 
     <!-- Pagination -->
-    <div class="px-8 py-6 bg-slate-50/50 border-t flex justify-between items-center">
-        <p class="text-sm text-slate-500">Menampilkan {{ count($transactions) }} data</p>
-
-        <div class="flex gap-2">
-            <button class="px-4 py-2 border rounded-xl text-sm flex items-center gap-2"><i class="fa-solid fa-chevron-left w-4 h-4"></i>Prev</button>
-            <button class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm">1</button>
-            <button class="px-4 py-2 border rounded-xl text-sm">2</button>
-            <button class="px-4 py-2 border rounded-xl text-sm flex items-center gap-2">Next<i class="fa-solid fa-chevron-right w-4 h-4"></i></button>
+    <div class="px-8 py-6 bg-slate-50/50 border-t flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <p class="text-sm text-slate-500">Menampilkan {{ $transactions->count() }} data</p>
+        <div>
+            {{ $transactions->links() }}
         </div>
     </div>
 

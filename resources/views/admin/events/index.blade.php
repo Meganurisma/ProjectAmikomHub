@@ -37,6 +37,7 @@
                 <thead
                     class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white uppercase text-xs font-black tracking-widest">
                     <tr>
+                        <th class="px-8 py-4">Poster</th>
                         <th class="px-8 py-4">Judul Event</th>
                         <th class="px-8 py-4">Kategori</th>
                         <th class="px-8 py-4">Tanggal</th>
@@ -46,6 +47,10 @@
                 <tbody class="divide-y divide-emerald-100 border-t border-emerald-100">
                     @forelse($events as $event)
                         <tr class="hover:bg-emerald-50 transition">
+                            <td class="px-8 py-5">
+                                <img src="{{ ($event->poster_path && Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/64x64' }}"
+                                    alt="Poster {{ $event->title }}" class="w-16 h-16 rounded-lg object-cover">
+                            </td>
                             <td class="px-8 py-5">
                                 <p class="font-bold text-slate-800">{{ $event->title }}</p>
                             </td>

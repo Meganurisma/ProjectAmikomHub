@@ -95,7 +95,6 @@
             </div>
         </div>
     </main>
-@endsection
 
     {{-- Overlay Midtrans Simulation --}}
     <div id="midtrans-overlay"

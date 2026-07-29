@@ -21,4 +21,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }

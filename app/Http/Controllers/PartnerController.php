@@ -14,6 +14,10 @@ class PartnerController extends Controller
     {
         $query = Partner::query();
 
+        if ($request->user() && $request->user()->role === 'org_admin') {
+            $query->where('organization_id', $request->user()->organization_id);
+        }
+
         // Search functionality
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -43,6 +47,10 @@ class PartnerController extends Controller
             'logo_url' => 'nullable|string|max:500',
         ]);
 
+        if ($request->user() && $request->user()->role === 'org_admin') {
+            $data['organization_id'] = $request->user()->organization_id;
+        }
+
         Partner::create($data);
 
         return redirect()->route('admin.partners.index')->with('success', 'Partner berhasil ditambahkan.');
@@ -66,6 +74,10 @@ class PartnerController extends Controller
             'logo_url' => 'nullable|string|max:500',
         ]);
 
+        if ($request->user() && $request->user()->role === 'org_admin') {
+            $data['organization_id'] = $request->user()->organization_id;
+        }
+
         $partner->update($data);
 
         return redirect()->route('admin.partners.index')->with('success', 'Partner berhasil diperbarui.');
@@ -79,5 +91,17 @@ class PartnerController extends Controller
         $partner->delete();
 
         return redirect()->route('admin.partners.index')->with('success', 'Partner berhasil dihapus.');
+    }
+
+    /**
+     * Public partner profile showing events and reviews.
+     */
+    public function show(Partner $partner)
+    {
+        $partner->load(['events', 'reviews.user']);
+
+        $average = $partner->reviews()->avg('rating');
+
+        return view('partners.show', compact('partner', 'average'));
     }
 }

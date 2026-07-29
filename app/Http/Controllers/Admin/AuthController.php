@@ -11,6 +11,15 @@ class AuthController extends Controller
     // 1. Fungsi menampilkan halaman view formulir login
     public function showLogin()
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if (in_array($user->role, ['admin', 'org_admin'])) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('home');
+        }
+
         return view('auth.login');
     }
 
@@ -24,7 +33,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+
+            $user = Auth::user();
+            if (in_array($user->role, ['admin', 'org_admin'])) {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            return redirect()->intended(route('home'));
         }
 
         return back()->withErrors([

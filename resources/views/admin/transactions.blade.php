@@ -53,6 +53,7 @@
                     <th class="px-8 py-4">Order ID</th>
                     <th class="px-8 py-4">Pembeli</th>
                     <th class="px-8 py-4">Event</th>
+                    <th class="px-8 py-4">Reminder</th>
                     <th class="px-8 py-4">Tanggal</th>
                     <th class="px-8 py-4">Status</th>
                     <th class="px-8 py-4 text-right">Total</th>
@@ -63,10 +64,20 @@
                 @forelse($transactions as $transaction)
                 <tr class="hover:bg-slate-50">
                     <td class="px-8 py-6 font-mono font-bold text-indigo-600">{{ $transaction->order_id }}</td>
-                    <td class="px-8 py-6">
+                    <td class="px-8 py-6"> 
                         <p class="font-bold">{{ $transaction->customer_name }}</p>
                         <p class="text-xs text-slate-400">{{ $transaction->customer_email }}</p>
                         <p class="text-xs text-slate-400">{{ $transaction->customer_phone }}</p>
+                    </td>
+                    <td class="px-8 py-6 text-sm">
+                        <p>Attempts: <strong>{{ $transaction->reminder_attempts ?? 0 }}</strong></p>
+                        <p>Last: <strong>{{ $transaction->abandoned_reminder_sent_at?->format('d M Y H:i') ?? '-' }}</strong></p>
+                        @if(strtolower($transaction->status) === 'pending')
+                        <form action="{{ route('admin.transactions.resendReminder', $transaction) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="mt-2 px-3 py-1 bg-indigo-600 text-white rounded text-xs">Kirim Ulang</button>
+                        </form>
+                        @endif
                     </td>
                     <td class="px-8 py-6">{{ $transaction->event->title ?? '-' }}</td>
                     <td class="px-8 py-6 text-sm text-slate-500">{{ $transaction->created_at?->format('d M Y, H:i') ?? '-' }}</td>

@@ -160,6 +160,13 @@
             <button type="submit">Login</button>
         </form>
 
+        <form action="{{ route('auth.google') }}" method="GET" style="margin-top: 16px;">
+            <button type="submit" style="width: 100%; padding: 10px 16px; margin-top: 8px; background-color: #4285F4; color: white; border: none; border-radius: 4px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" height="20">
+                Login dengan Google
+            </button>
+        </form>
+
         <div class="credentials">
             <p><strong>Default Credentials:</strong></p>
             <p>Email: <span class="mono">admin@amikom.ac.id</span></p>

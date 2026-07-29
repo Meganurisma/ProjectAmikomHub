@@ -21,12 +21,11 @@
 <body class="bg-slate-50 text-slate-900 flex min-h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-emerald-900 text-emerald-100 flex flex-col p-6 space-y-8 sticky top-0 h-screen">
-
+    <aside class="w-64 bg-indigo-900 text-indigo-100 flex flex-col p-6 space-y-8 sticky top-0 h-screen">
         <!-- Logo -->
         <div class="flex items-center gap-3">
             <div
-                class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-900 font-bold text-xl">
+                class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-900 font-bold text-xl">
                 AH
             </div>
             <span class="text-xl font-bold text-white tracking-tight">AmikomEventHub</span>
@@ -34,66 +33,103 @@
 
         <!-- Menu -->
         <nav class="flex-1 space-y-2">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-4 px-2">Main Menu</p>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 mb-4 px-2">Main Menu</p>
 
             <!-- Dashboard -->
-            <a href="/admin" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-800 rounded-xl font-bold">
-                <i class="fa-solid fa-gauge w-5 h-5"></i>
+            <a href="{{ route('admin.dashboard') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                    </path>
+                </svg>
                 Dashboard
             </a>
 
             <!-- Event -->
-            <a href="/admin/events" class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-800 rounded-xl font-bold">
-                <i class="fa-solid fa-calendar-days w-5 h-5"></i>
+            <a href="{{ route('admin.events.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.events*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                    </path>
+                </svg>
                 Kelola Event
             </a>
 
+            <!-- Organizations -->
+            <a href="{{ route('admin.organizations.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.organizations*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+                </svg>
+                Organizations
+            </a>
+
             <!-- Partner -->
-            <a href="/admin/partners"
-                class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-800 rounded-xl font-bold">
-                <i class="fa-solid fa-handshake w-5 h-5"></i>
+            <a href="{{ route('admin.partners.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.partners*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 12H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z">
+                    </path>
+                </svg>
                 Partner
             </a>
 
-            <!-- Transaksi -->
-            <a href="/admin/transactions"
-                class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-800 rounded-xl font-bold">
-                <i class="fa-solid fa-receipt w-5 h-5"></i>
-                Laporan Transaksi
-            </a>
-
-            <!-- KATEGORI -->
-            <a href="/admin/categories"
-                class="flex items-center gap-3 px-4 py-3 hover:bg-emerald-800 rounded-xl font-bold">
-                <i class="fa-solid fa-tag w-5 h-5"></i>
+            <!-- Kategori -->
+            <a href="{{ route('admin.categories.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.categories*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                    </path>
+                </svg>
                 Kategori
             </a>
-        </nav>
+
+            <!-- Transaksi -->
+            <a href="{{ route('admin.transactions.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.transactions*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                    </path>
+                </svg>
+                Laporan Transaksi
+            </a>
+            <!-- WhatsApp Audit -->
+            <a href="{{ route('admin.whatsapp_logs.index') }}"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-800 rounded-xl font-bold transition {{ request()->routeIs('admin.whatsapp_logs*') ? 'bg-indigo-800 text-white' : 'text-indigo-100' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 8a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 2h6m-6 4h4m-2-8v2">
+                    </path>
+                </svg>
+                Audit WhatsApp
+            </a>        </nav>
 
         <!-- Logout -->
-        <div class="pt-6 border-t border-emerald-800">
-            <a href="/" class="flex items-center gap-3 px-4 py-3 text-emerald-300 hover:text-white font-medium">
-                <i class="fa-solid fa-arrow-right-from-bracket w-5 h-5"></i>
-                Keluar
-            </a>
+        <div class="pt-6 border-t border-indigo-800">
+            <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit"
+                    class="flex items-center gap-3 px-4 py-3 text-indigo-300 hover:text-white transition font-medium w-full text-left">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                        </path>
+                    </svg>
+                    Keluar
+                </button>
+            </form>
         </div>
 
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 p-10 overflow-y-auto">
-
-        <!-- Header -->
-        <header class="flex justify-between items-center mb-10">
-            <div>
-                <h1 class="text-3xl font-black">Admin Panel</h1>
-                <p class="text-slate-500 font-medium">Selamat datang kembali, Admin!</p>
-            </div>
-        </header>
-
-        <!-- Konten -->
         @yield('content')
-
     </main>
 
 </body>

@@ -16,6 +16,11 @@ class EventController extends Controller
     {
         $query = \App\Models\Event::with('category');
 
+        // If the current admin is an organization admin, scope to their organization
+        if ($request->user() && $request->user()->role === 'org_admin') {
+            $query->where('organization_id', $request->user()->organization_id);
+        }
+
         // Search functionality
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -45,6 +50,7 @@ class EventController extends Controller
     {
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
+            'partner_id' => 'nullable|exists:partners,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date' => 'required|date',
@@ -56,6 +62,11 @@ class EventController extends Controller
 
         if ($request->hasFile('poster')) {
             $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
+
+        // set organization if created by org_admin
+        if ($request->user() && $request->user()->role === 'org_admin') {
+            $data['organization_id'] = $request->user()->organization_id;
         }
 
         Event::create($data);
@@ -87,6 +98,7 @@ class EventController extends Controller
     {
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
+            'partner_id' => 'nullable|exists:partners,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date' => 'required|date',

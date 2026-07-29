@@ -13,6 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
+            'redirect.if.authenticated' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        ]);
+
+        // Mengecualikan route webhook Midtrans dari blokir CSRF
+        $middleware->validateCsrfTokens(except: [
+            '/midtrans/callback',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
